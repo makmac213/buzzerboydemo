@@ -1,23 +1,16 @@
 # django imports
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login, logout
-from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.views import View
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth import login
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.http import HttpResponse
-from django.conf import settings
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.utils import translation
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views import View
 
 # authorization
 from .forms import CompanyForm, SignupForm
@@ -100,22 +93,25 @@ class LoginView(DjangoLoginView):
 
 
 class LogoutView(View):
+
     def get(self, request):
         logout(request)
         return redirect('authorization:login')
 
 
 class PasswordlessLoginView(View):
+
     def get(self, request, uidb64):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except (User.DoesNotExist, ValueError, TypeError, OverflowError):
             return HttpResponse('Invalid or expired login link.', status=400)
+        # login and set the active profile on session
         login(request, user)
         active_profile = user.profiles.filter(is_default=True).first()
         request.session['active_profile'] = active_profile.id
-        print(active_profile.default_language)
+        # We need to set the cookie first or translation.activate will not work
         translation.activate(active_profile.default_language)
         response = redirect('authorization:dashboard')
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, active_profile.default_language)
@@ -130,6 +126,8 @@ class DashboardView(LoginRequiredMixin, View):
     
 
 class SetLanguageView(LoginRequiredMixin, View):
+    """Language switcher for logged in users"""
+
     def post(self, request):
         language = request.POST.get('language')
         response = redirect('authorization:dashboard')
