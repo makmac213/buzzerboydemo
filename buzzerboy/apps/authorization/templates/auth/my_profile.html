@@ -1,0 +1,44 @@
+{% extends "auth/dashboard_base.html" %}
+{% load i18n static %}
+    
+{% block title %}{% trans 'My Companies' %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="row">
+            <h1 class="mt-4">{% trans 'Profile' %}</h1>
+        </div>
+
+        <div class="row">
+            <!-- Basic Example -->
+            <div class="col-xl-6">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'assets/images/users/user-11.jpg' %}" class="rounded-2 avatar-xxl" alt="image profile">
+
+                                <div class="overflow-hidden ms-4">
+                                    <h4 class="m-0 text-dark fs-20">{{ request.user.get_full_name }}</h4>
+                                    <span class="fs-15">Company: <span>{{ instance.company.name }}</span>
+
+                                    {% if active_profile.id != instance.id %}
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ instance.id }}" name="profile_id" />
+                                            <button type="submit" class="btn btn-primary btn-xs">
+                                                <i class="mdi mdi-account-switch"></i> {% trans "Switch to this profile" %}
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "auth/dashboard_base.html" %}
+
+{% load static i18n %}
+    
+{% block title %}Dashboard | Welcome {{ user.username }}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mt-4">Dashboard</h1>
+                <p>{% trans "Welcome to your dashboard" %}, {{ user.username }}!</p>
+                <p>{% trans "Your current company profile is" %} {{ active_profile.company.name }}
+                <!-- Add more dashboard content here -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

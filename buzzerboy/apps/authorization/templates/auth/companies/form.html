@@ -1,0 +1,51 @@
+{% extends "auth/dashboard_base.html" %}
+{% load i18n static widget_tweaks %}
+    
+{% block title %}
+    {% if instance %}
+        {% trans 'Update Company' %}
+    {% else %}
+        {% trans 'New Company' %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="row">
+            <h1 class="mt-4">
+                {% if instance %}
+                    {% trans 'Update Company' %}
+                {% else %}
+                    {% trans 'New Company' %}
+                {% endif %}
+            </h1>
+        </div>
+
+        <div class="row">
+            <!-- Basic Example -->
+            <div class="col-xl-6">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <form method="POST">
+                                {% csrf_token %}
+
+                                <div class="mb-3">
+                                    <label for="id_name" class="form-label">{% trans 'Name' %}</label>
+                                    {{ form.name|add_class:"form-control" }}
+                                    <div id="name-feedback" class="invalid-feedback" {% if form.name.errors %}style="display: block"{% endif %}>{{ form.name.errors|join:", " }}</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary btn-xs">Submit</button>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

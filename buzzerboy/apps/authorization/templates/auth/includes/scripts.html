@@ -1,0 +1,33 @@
+{% load static %}
+        <!-- Vendor -->
+        <script src="{% static 'assets/libs/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
+        <script src="{% static 'assets/libs/node-waves/waves.min.js' %}"></script>
+        <script src="{% static 'assets/libs/waypoints/lib/jquery.waypoints.min.js' %}"></script>
+        <script src="{% static 'assets/libs/jquery.counterup/jquery.counterup.min.js' %}"></script>
+        <script src="{% static 'assets/libs/feather-icons/feather.min.js' %}"></script>
+
+        <!-- App js-->
+        <script src="{% static 'assets/js/app.js' %}"></script>
+
+        <script>
+                $(document).ready(function() {
+                    $('.language-item').on('click', function() {
+                        var selectedLanguage = $(this).data('language');
+                        // Make an AJAX call to update the language preference
+                        $.ajax({
+                            url: '{% url "authorization:set_language" %}',
+                            type: 'POST',
+                            data: {
+                                'language': selectedLanguage,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function(response) {
+                                // Reload the page or update the UI as needed
+                                location.reload();
+                            }
+                        });
+                    });
+                });
+        </script>

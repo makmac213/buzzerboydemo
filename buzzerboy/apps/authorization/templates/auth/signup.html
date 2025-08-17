@@ -1,0 +1,83 @@
+{% extends "auth/base.html" %}
+
+{% load static i18n %}
+
+{% block title %}{% trans "Sign up" %}{% endblock %}
+
+{% block content %}
+
+    <div class="p-0">
+        <div class="text-center">
+            <div class="auth-title-section mb-3"> 
+                <h3 class="text-dark fs-20 fw-medium mb-2">{% trans "Sign up" %}</h3>
+            </div>
+        </div>
+    </div>
+
+    {% if form.errors %}
+        {% for field, error in form.errors.items %}
+            <div class="pt-0">
+                <div class="alert alert-danger" role="alert">
+                    {{ field }}: {{ error }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form action="{% url 'authorization:signup' %}" method="POST" class="my-4">
+
+        {% csrf_token %}
+
+        <div class="form-group mb-3">
+            <label for="company" class="form-label">{% trans "Company name" %}</label>
+            <input class="form-control" name="company" type="text" id="company" required="" placeholder="{% trans 'Enter your company name' %}">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="username" class="form-label">{% trans "Email address" %}</label>
+            <input class="form-control" name="username" type="email" id="username" required="" placeholder="{% trans 'Enter your email' %}">
+        </div>
+
+        <div class="form-group mb-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="first_name" class="form-label">{% trans "First name" %}</label>
+                    <input class="form-control" name="first_name" type="text" id="first_name" required="" placeholder="{% trans 'First name' %}">
+                </div>
+                <div class="col-md-6">
+                    <label for="last_name" class="form-label">{% trans "Last name" %}</label>
+                    <input class="form-control" name="last_name" type="text" id="last_name" required="" placeholder="{% trans 'Last name' %}">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group mb-0 row">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">{% trans "Submit" %}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="pt-0">
+        <div class="text-center">
+            <form action="{% url 'set_language' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="en">
+                <button type="submit" style="border: none; background-color: transparent; padding: 0;">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/23px-Flag_of_the_United_Kingdom.svg.png" alt="English" title="English" style="width: 25px; height: 15px;">
+                </button>
+            </form>
+
+            <form action="{% url 'set_language' %}" method="post" style="display: inline; margin-left: 10px;">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="es">
+                <button type="submit" style="border: none; background-color: transparent; padding: 0;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/23px-Flag_of_Spain.svg.png" alt="Español" title="Español" style="width: 25px; height: 15px;">
+                </button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
