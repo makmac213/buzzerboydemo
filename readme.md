@@ -55,3 +55,6 @@
 
 #### Redis and Celery
   - We added Redis and Celery to the project to handle asyncronous background tasks. We also need this so we could immediately send a 200 response to Slack to avoid duplicate events sent by them.
+
+### Bedrock Models
+  - At chatbots/utils.py for handling with models ```anthropic.claude-v2``` and ```amazon.titan-text-express-v1```
